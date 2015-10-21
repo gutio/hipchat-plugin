@@ -53,11 +53,13 @@ public class HipChatNotifier extends Notifier implements MatrixAggregatable {
     private String startJobMessage;
     private String completeJobMessage;
 
+    private boolean startNotifyPurple;
+
     @DataBoundConstructor
     public HipChatNotifier(String token, String room, boolean startNotification, boolean notifySuccess,
             boolean notifyAborted, boolean notifyNotBuilt, boolean notifyUnstable, boolean notifyFailure,
             boolean notifyBackToNormal, MatrixTriggerMode matrixTriggerMode, String startJobMessage,
-            String completeJobMessage) {
+            String completeJobMessage, boolean startNotifyPurple) {
         this.token = token;
         this.room = room;
         this.startNotification = startNotification;
@@ -71,6 +73,8 @@ public class HipChatNotifier extends Notifier implements MatrixAggregatable {
 
         this.startJobMessage = startJobMessage;
         this.completeJobMessage = completeJobMessage;
+
+        this.startNotifyPurple = startNotifyPurple;
     }
 
     /* notification enabled disabled setters/getters */
@@ -246,7 +250,10 @@ public class HipChatNotifier extends Notifier implements MatrixAggregatable {
             BuildListener listener) {
         if (isNotificationEnabled(notificationType)) {
             try {
-                getHipChatService(build).publish(notificationType.getMessage(build, this), notificationType.getColor());
+                if(notificationType == NotificationType.STARTED && startNotifyPurple)
+                    getHipChatService(build).publish(notificationType.getMessage(build, this), "purple");
+                else
+                    getHipChatService(build).publish(notificationType.getMessage(build, this), notificationType.getColor());
                 listener.getLogger().println(Messages.NotificationSuccessful(getResolvedRoom(build)));
             } catch (NotificationException ne) {
                 listener.getLogger().println(Messages.NotificationFailed(ne.getMessage()));

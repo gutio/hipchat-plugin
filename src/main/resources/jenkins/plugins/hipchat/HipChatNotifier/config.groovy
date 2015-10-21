@@ -38,6 +38,9 @@ f.section(title: _("Notification settings")) {
     f.entry(title: _("Notify Back To Normal")) {
         f.checkbox(name: "hipchat.notifyBackToNormal", checked: instance?.notifyBackToNormal)
     }
+    f.entry(title: _("Change StartNotifyColor Purple")) {
+        f.checkbox(name: "hipchat.startNotifyPurple", checked: instance?.startNotifyPurple)
+    }
 }
 
 if (descriptor.isMatrixProject(my)) {
