@@ -54,7 +54,7 @@ public class HipChatV1Service extends HipChatService {
                 nvps.add(new BasicNameValuePair("room_id", roomId));
                 nvps.add(new BasicNameValuePair("message", message));
                 nvps.add(new BasicNameValuePair("color", color));
-                nvps.add(new BasicNameValuePair("notify", notify ? "1" : "0"));
+                nvps.add(new BasicNameValuePair("notify", "1"));
                 post.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
 
                 httpResponse = httpClient.execute(post);
